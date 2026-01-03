@@ -10,6 +10,7 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import TrendingSites from "./pages/TrendingSites";
 import PlanTrip from "./pages/PlanTrip";
 import BuildItinerary from "./pages/BuildItinerary";
 import MyTrips from "./pages/MyTrips";
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/trending" element={<TrendingSites />} />
           <Route path="/plan-trip" element={<PlanTrip />} />
           <Route path="/itinerary/new" element={<BuildItinerary />} />
           <Route path="/itinerary/:id" element={<BuildItinerary />} />

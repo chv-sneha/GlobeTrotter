@@ -74,28 +74,30 @@ const recentTrips = [
 export default function Dashboard() {
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
         {/* Hero Section */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative rounded-3xl overflow-hidden mb-10"
+          className="relative rounded-2xl sm:rounded-3xl overflow-hidden mb-8 sm:mb-10"
         >
           <div className="absolute inset-0">
-            <img
-              src={baliImage}
-              alt="Travel destination"
+            <video
+              src="/src/assets/Blue Ocean Travel Vlog Opening Video.mp4"
+              autoPlay
+              loop
+              muted
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black/40" />
           </div>
           
-          <div className="relative z-10 p-12 md:p-16 lg:p-20 max-w-2xl">
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
+          <div className="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16 xl:p-20 max-w-full sm:max-w-2xl">
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 text-white leading-tight">
               Where will your next
               <span className="text-amber-300 block">adventure take you?</span>
             </h1>
-            <p className="text-lg text-gray-200 mb-8 max-w-md leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-200 mb-6 sm:mb-8 max-w-full sm:max-w-md leading-relaxed">
               Plan, organize, and share your travel itineraries with ease. 
               Your journey starts here.
             </p>
@@ -109,13 +111,13 @@ export default function Dashboard() {
         </motion.section>
 
         {/* Search and Filter Bar */}
-        <section className="mb-10">
+        <section className="mb-8 sm:mb-10">
           <SearchBar />
         </section>
 
         {/* Stats Grid */}
-        <section className="mb-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <section className="mb-8 sm:mb-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {stats.map((stat, index) => (
               <StatCard key={stat.title} {...stat} delay={index} />
             ))}
@@ -123,11 +125,11 @@ export default function Dashboard() {
         </section>
 
         {/* Explore Destinations */}
-        <section className="mb-10">
-          <div className="flex items-center justify-between mb-6">
+        <section className="mb-8 sm:mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-3">
             <div>
-              <h2 className="font-display text-2xl font-bold">Explore Destinations</h2>
-              <p className="text-muted-foreground">Discover popular places to visit</p>
+              <h2 className="font-display text-xl sm:text-2xl font-bold">Explore Destinations</h2>
+              <p className="text-muted-foreground text-sm sm:text-base">Discover popular places to visit</p>
             </div>
             <Link to="/search">
               <Button variant="ghost">
@@ -136,7 +138,7 @@ export default function Dashboard() {
             </Link>
           </div>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {destinations.map((dest, index) => (
               <motion.div
                 key={dest.name}
