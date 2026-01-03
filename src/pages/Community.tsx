@@ -5,7 +5,6 @@ import { Layout } from "@/components/layout/Layout";
 import { SearchBar } from "@/components/shared/SearchBar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import GetStartedButton from "@/components/GetStartedButton";
 
 import parisImage from "@/assets/destination-paris.jpg";
 import tokyoImage from "@/assets/destination-tokyo.jpg";
@@ -181,7 +180,6 @@ export default function Community() {
           ))}
         </div>
       </div>
-      <GetStartedButton />
     </Layout>
   );
 }

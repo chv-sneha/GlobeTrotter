@@ -185,7 +185,7 @@ export default function Profile() {
                     alt={trip.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <Badge className="absolute top-3 right-3 status-upcoming">Upcoming</Badge>
                 </div>
                 <div className="p-4">
@@ -227,7 +227,7 @@ export default function Profile() {
                     alt={trip.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <Badge className="absolute top-3 right-3 status-completed">Completed</Badge>
                 </div>
                 <div className="p-4">

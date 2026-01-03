@@ -14,7 +14,8 @@ import {
   LogOut,
   ChevronDown,
   Sun,
-  Moon
+  Moon,
+  TrendingUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,6 +28,7 @@ import {
 
 const navLinks = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
+  { href: "/trending", label: "Trending Sites", icon: TrendingUp },
   { href: "/trips", label: "My Trips", icon: Map },
   { href: "/calendar", label: "Calendar", icon: Calendar },
   { href: "/community", label: "Community", icon: Users },

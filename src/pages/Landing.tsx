@@ -64,25 +64,25 @@ export default function Landing() {
       {/* Scroll-Down Content */}
       <div className="bg-white">
         {/* About Section */}
-        <div className="max-w-6xl mx-auto px-6 py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6 font-display">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 font-display">
               Your Journey Starts Here
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-body">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-body px-4">
               Plan smarter, travel better. GlobeTrotter helps you create personalized itineraries, 
               manage budgets, and discover amazing destinations worldwide.
             </p>
           </motion.div>
 
           {/* Features Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -142,13 +142,13 @@ export default function Landing() {
         </div>
 
         {/* Footer */}
-        <footer className="bg-gray-50 py-16">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="bg-yellow-800 rounded-3xl p-12 shadow-2xl text-white">
-              <div className="grid md:grid-cols-4 gap-8">
-                <div>
-                  <h3 className="text-xl font-bold mb-4 font-display">GlobeTrotter</h3>
-                  <p className="text-yellow-100">Empowering personalized travel planning for adventurers worldwide.</p>
+        <footer className="bg-gray-50 py-12 sm:py-16">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="bg-yellow-800 rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-2xl text-white">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                <div className="sm:col-span-2 lg:col-span-1">
+                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 font-display">GlobeTrotter</h3>
+                  <p className="text-yellow-100 text-sm sm:text-base">Empowering personalized travel planning for adventurers worldwide.</p>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-3 font-display">Features</h4>
