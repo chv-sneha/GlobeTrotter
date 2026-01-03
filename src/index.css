@@ -305,6 +305,24 @@
 }
 
 @layer utilities {
+  /* Image optimization */
+  .img-hd {
+    image-rendering: crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  .img-smooth {
+    image-rendering: auto;
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  .img-no-blur {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+  }
+
   /* Text balance for headings */
   .text-balance {
     text-wrap: balance;

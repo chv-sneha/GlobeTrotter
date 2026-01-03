@@ -24,14 +24,32 @@ const svgFiles = [
 
 export default function Landing() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % svgFiles.length);
+      setIsTransitioning(true);
+      setCurrentIndex((prev) => {
+        if (prev === svgFiles.length - 1) {
+          // When reaching the last slide, continue to a duplicate first slide
+          return prev + 1;
+        }
+        return prev + 1;
+      });
     }, 4000);
 
     return () => clearInterval(interval);
   }, []);
+
+  // Reset to actual first slide after showing duplicate
+  useEffect(() => {
+    if (currentIndex === svgFiles.length) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(0);
+      }, 1200); // Match transition duration
+    }
+  }, [currentIndex]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -42,17 +60,26 @@ export default function Landing() {
           <motion.div
             className="flex h-full"
             animate={{ x: `-${currentIndex * 100}%` }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            style={{ width: `${svgFiles.length * 100}%` }}
+            transition={{ 
+              duration: isTransitioning ? 1.2 : 0, 
+              ease: [0.25, 0.1, 0.25, 1],
+              type: "tween"
+            }}
+            style={{ width: `${(svgFiles.length + 1) * 100}%` }}
           >
-            {svgFiles.map((svg, index) => (
-              <div key={index} className="w-full h-full flex-shrink-0 relative">
+            {[...svgFiles, svgFiles[0]].map((svg, index) => (
+              <motion.div 
+                key={index} 
+                className="w-full h-full flex-shrink-0 relative"
+              >
                 <img 
                   src={svg}
-                  alt={`Travel destination ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  alt={`Travel destination ${(index % svgFiles.length) + 1}`}
+                  className="w-full h-full object-cover img-hd"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
                 />
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
