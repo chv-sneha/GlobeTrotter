@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Star, DollarSign, Clock, ArrowRight } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
@@ -6,83 +6,62 @@ import { SearchBar } from "@/components/shared/SearchBar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-import parisImage from "@/assets/destination-paris.jpg";
-import tokyoImage from "@/assets/destination-tokyo.jpg";
-import newyorkImage from "@/assets/destination-newyork.jpg";
-import baliImage from "@/assets/destination-bali.jpg";
-import dubaiImage from "@/assets/destination-dubai.jpg";
-
-const searchResults = [
-  {
-    id: "1",
-    type: "destination",
-    name: "Paris, France",
-    description: "The City of Light offers world-renowned art, architecture, and cuisine. Visit the Eiffel Tower, Louvre Museum, and charming Montmartre.",
-    rating: 4.8,
-    priceLevel: "$$$",
-    duration: "5-7 days recommended",
-    tags: ["Culture", "History", "Romance"],
-    image: parisImage,
-  },
-  {
-    id: "2",
-    type: "destination",
-    name: "Tokyo, Japan",
-    description: "A fascinating blend of traditional temples and cutting-edge technology. Experience ancient shrines, vibrant neighborhoods, and incredible food.",
-    rating: 4.9,
-    priceLevel: "$$$$",
-    duration: "7-10 days recommended",
-    tags: ["Culture", "Food", "Technology"],
-    image: tokyoImage,
-  },
-  {
-    id: "3",
-    type: "activity",
-    name: "Central Park Walking Tour",
-    description: "Explore the iconic 843-acre urban park in the heart of Manhattan. Visit famous landmarks like Bethesda Fountain and Bow Bridge.",
-    rating: 4.7,
-    priceLevel: "$",
-    duration: "3-4 hours",
-    tags: ["Nature", "Walking", "Photography"],
-    image: newyorkImage,
-  },
-  {
-    id: "4",
-    type: "destination",
-    name: "Bali, Indonesia",
-    description: "Tropical paradise known for forested volcanic mountains, iconic rice paddies, beaches, and coral reefs. Perfect for relaxation and adventure.",
-    rating: 4.6,
-    priceLevel: "$$",
-    duration: "7-14 days recommended",
-    tags: ["Beach", "Nature", "Wellness"],
-    image: baliImage,
-  },
-  {
-    id: "5",
-    type: "activity",
-    name: "Desert Safari Adventure",
-    description: "Experience thrilling dune bashing, camel rides, and a traditional Bedouin camp dinner under the stars in the Dubai desert.",
-    rating: 4.8,
-    priceLevel: "$$",
-    duration: "6-8 hours",
-    tags: ["Adventure", "Desert", "Culture"],
-    image: dubaiImage,
-  },
-  {
-    id: "6",
-    type: "destination",
-    name: "New York City, USA",
-    description: "The Big Apple offers endless entertainment, world-class museums, Broadway shows, and iconic landmarks like Times Square and the Statue of Liberty.",
-    rating: 4.7,
-    priceLevel: "$$$",
-    duration: "4-7 days recommended",
-    tags: ["Urban", "Entertainment", "Shopping"],
-    image: newyorkImage,
-  },
-];
-
 export default function SearchResults() {
-  const [results] = useState(searchResults);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    fetchDestinations();
+  }, []);
+
+  const fetchDestinations = async (query = '') => {
+    try {
+      setLoading(true);
+      const url = query 
+        ? `http://localhost:5001/api/destinations/search?q=${encodeURIComponent(query)}`
+        : 'http://localhost:5001/api/destinations';
+      
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setResults(data);
+      }
+    } catch (error) {
+      console.error('Error fetching destinations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    fetchDestinations(query);
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <div className="animate-pulse space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="bg-card rounded-xl border p-4">
+                <div className="flex gap-4">
+                  <div className="w-48 h-32 bg-muted rounded-lg"></div>
+                  <div className="flex-1">
+                    <div className="h-4 bg-muted rounded w-1/3 mb-2"></div>
+                    <div className="h-6 bg-muted rounded w-2/3 mb-2"></div>
+                    <div className="h-4 bg-muted rounded w-full mb-2"></div>
+                    <div className="h-4 bg-muted rounded w-3/4"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -102,7 +81,10 @@ export default function SearchResults() {
 
         {/* Search Bar */}
         <div className="mb-8">
-          <SearchBar placeholder="Search cities, activities, or keywords..." />
+          <SearchBar 
+            placeholder="Search cities, activities, or keywords..." 
+            onSearch={handleSearch}
+          />
         </div>
 
         {/* Results Count */}
@@ -113,6 +95,7 @@ export default function SearchResults() {
         >
           <p className="text-muted-foreground">
             Showing <span className="text-foreground font-medium">{results.length}</span> results
+            {searchQuery && <span> for "{searchQuery}"</span>}
           </p>
         </motion.div>
 
@@ -129,11 +112,17 @@ export default function SearchResults() {
               <div className="flex flex-col sm:flex-row gap-4">
                 {/* Image */}
                 <div className="sm:w-48 h-32 sm:h-auto rounded-lg overflow-hidden flex-shrink-0">
-                  <img
-                    src={result.image}
-                    alt={result.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  {result.image_url ? (
+                    <img
+                      src={result.image_url}
+                      alt={result.city_name || result.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-hero flex items-center justify-center">
+                      <MapPin className="h-8 w-8 text-white" />
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -141,38 +130,57 @@ export default function SearchResults() {
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <div>
                       <Badge variant="secondary" className="mb-2 text-xs">
-                        {result.type === "destination" ? "Destination" : "Activity"}
+                        {result.city_name ? 'Destination' : 'Attraction'}
                       </Badge>
-                      <h3 className="font-display text-lg font-semibold">{result.name}</h3>
+                      <h3 className="font-display text-lg font-semibold">
+                        {result.city_name ? `${result.city_name}, ${result.country_name}` : result.name}
+                      </h3>
                     </div>
-                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-muted">
-                      <Star className="h-3 w-3 text-amber fill-amber" />
-                      <span className="text-sm font-medium">{result.rating}</span>
-                    </div>
+                    {result.rating && (
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-muted">
+                        <Star className="h-3 w-3 text-amber fill-amber" />
+                        <span className="text-sm font-medium">{result.rating}</span>
+                      </div>
+                    )}
                   </div>
 
                   <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                    {result.description}
+                    {result.description || `Explore ${result.city_name || result.name} and discover amazing attractions and experiences.`}
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1">
-                      <DollarSign className="h-4 w-4 text-primary" />
-                      {result.priceLevel}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-4 w-4 text-primary" />
-                      {result.duration}
-                    </span>
+                    {result.average_cost_per_day && (
+                      <span className="flex items-center gap-1">
+                        <DollarSign className="h-4 w-4 text-primary" />
+                        ${result.average_cost_per_day}/day
+                      </span>
+                    )}
+                    {result.average_cost && (
+                      <span className="flex items-center gap-1">
+                        <DollarSign className="h-4 w-4 text-primary" />
+                        ${result.average_cost}
+                      </span>
+                    )}
+                    {result.average_visit_duration && (
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-4 w-4 text-primary" />
+                        {result.average_visit_duration} min
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex flex-wrap gap-2">
-                      {result.tags.map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs">
-                          {tag}
+                      {result.category && (
+                        <Badge variant="outline" className="text-xs">
+                          {result.category}
                         </Badge>
-                      ))}
+                      )}
+                      {result.country_name && (
+                        <Badge variant="outline" className="text-xs">
+                          {result.country_name}
+                        </Badge>
+                      )}
                     </div>
                     <Button variant="ghost" size="sm" className="group-hover:text-primary">
                       View Details
@@ -184,6 +192,16 @@ export default function SearchResults() {
             </motion.div>
           ))}
         </div>
+
+        {results.length === 0 && !loading && (
+          <div className="text-center py-12">
+            <h3 className="font-display text-xl font-bold mb-2">No results found</h3>
+            <p className="text-muted-foreground mb-6">
+              {searchQuery ? `No destinations found for "${searchQuery}"` : 'No destinations available'}
+            </p>
+            <Button onClick={() => handleSearch('')}>Show All Destinations</Button>
+          </div>
+        )}
       </div>
     </Layout>
   );

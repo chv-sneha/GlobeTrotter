@@ -15,7 +15,8 @@ import {
   ChevronDown,
   Sun,
   Moon,
-  TrendingUp
+  TrendingUp,
+  Info
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +33,7 @@ const navLinks = [
   { href: "/trips", label: "My Trips", icon: Map },
   { href: "/calendar", label: "Calendar", icon: Calendar },
   { href: "/community", label: "Community", icon: Users },
+  { href: "/about", label: "About", icon: Info },
 ];
 
 export function Header() {

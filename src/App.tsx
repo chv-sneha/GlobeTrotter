@@ -21,6 +21,7 @@ import Community from "./pages/Community";
 import CalendarView from "./pages/CalendarView";
 import AdminPanel from "./pages/AdminPanel";
 import Settings from "./pages/Settings";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/search" element={<SearchResults />} />
           <Route path="/community" element={<Community />} />
           <Route path="/calendar" element={<CalendarView />} />
+          <Route path="/about" element={<About />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
